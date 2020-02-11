@@ -12,12 +12,16 @@ const server = http.createServer(function(req, res) {
 
     // Get the URL and parse it
 
-    const parsedurl = url.parse(req.url,true);
+    const parsedurl = url.parse(req.url,true); // This is the request object
     
     // Get the path
 
     const path = parsedurl.pathname;
-    const trimmedPath = path.replace(/^\/+|\/+$/g,'')
+    const trimmedPath = path.replace(/^\/+|\/+$/g,'');
+
+    // Get HTTP method
+
+    const method = req.method.toLowerCase();
 
     // Send the response
     
@@ -25,7 +29,7 @@ const server = http.createServer(function(req, res) {
 
     // Log the request path
 
-    console.log('Request receieved on path: ' + trimmedPath)
+    console.log('Request receieved on path: ' + trimmedPath + ' with method: ' + method)
 
     
 });
