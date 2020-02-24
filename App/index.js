@@ -6,6 +6,7 @@
 //Dependencies
 const http = require('http');
 const url = require('url');
+const StringDecoder = require('string_decoder').StringDecoder;
 
 // The server should respond to all requests within a string
 const server = http.createServer(function(req, res) {
@@ -31,13 +32,26 @@ const server = http.createServer(function(req, res) {
 
     const headers = req.headers;
 
-    // Send the response
+    // Get the USER's payload, if any...
+    // Side note ***Found that the variables decoder and buffer did not like being called const. They gave issues when using postman checking operation of things here***
+
+    var decoder = new StringDecoder('utf-8');
+    var buffer = '';
+    req.on('data', function(data) {
+        buffer += decoder.write(data);
+    });
+    req.on('end', function(){
+        buffer += decoder.end();
+        // Send the response
     
-    res.end('Hello World\n');
+        res.end('Hello World\n');
 
-    // Log the request path
+        // Log the request path
 
-    console.log('Request receieved with these headers: ',headers)
+        console.log('Request receieved with this payload: ',buffer)
+    });
+
+    
 
     
 });
